@@ -1,4 +1,4 @@
-#version 3.7 
+#version 3.7;
 
 
 #include "colors.inc"
@@ -50,17 +50,17 @@ light_source {
 	<0, 170.0, 0>,
 	30.
 	pigment {Blue}
-} 
-#declare h_kleiner_zylinder = cylinder { <0, 70.0, 0>, <0, 150.0, 0>, 29.}
+};
+#declare h_kleiner_zylinder = cylinder { <0, 70.0, 0>, <0, 150.0, 0>, 29.};
 #declare h_kegel = cone {
 	< 0, 120.0, 0.>, 0.0,	// (x,y,z) upper midpoint, radius
  	< 0, 0.0, 0.>, 95. 		// (x,y,z) lower midpoint, radius
-} 
+};
 
 #declare intersec = intersection {
 	object {help_cylinder_big_blue} 
 	object {help_sphere_red}
 	pigment {Blue}
-}
+};
 
 object{intersec}
