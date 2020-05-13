@@ -1,7 +1,7 @@
 
 #local colorOuterPart = <1, 0, 0.3>;
 #local colorInnerPart = <0.8, 0.4, 0.5>;
-#local colorEarCut =  <0.1, 0.1, 0.1>;
+#local colorEarCut =  <0.9, 0.9, 0.9>;
 
 #declare OuterPart = cone {
     <0, -25, 0>, 0 // <x, y, z>, center & radius of one end
@@ -21,7 +21,7 @@
     pigment {color rgb colorEarCut}
 };
 
-#declare Speaker = difference {
+#declare LeftSpeaker = difference {
     union {
         object {OuterPart}
         object {InnerPart}
@@ -29,17 +29,13 @@
     object {EarCut}
     rotate <0, 0, -90> // <x°, y°, z°>
     pigment {color rgb colorEarCut}
-};
-
-#declare LeftSpeaker = object {
-    Speaker
     translate <-250,0, 0> // <x, y, z>
 };
 
+
 #declare RightSpeaker = object {
-    Speaker
+    LeftSpeaker
     rotate <0, 180, 0> // <x°, y°, z°>
-    translate <250, 0, 0> // <x, y, z>
 };
 
 #declare Speakers = union {

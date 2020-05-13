@@ -1,29 +1,43 @@
 // Der Buegel ueber dem Kopf soll aus einem Torus gemacht werden
-#local colorInnerPart = <0.8, 0.4, 0.5>;
-#local colorOuterPart =  <0.05, 0.05, 0.05>;
+#local colorHeadband = <0.9, 0.9, 0.9>;
+#local colorInside =  <1, 0, 0.3>;
 
 #declare Base = torus {
-    200, 140 // major radius, minor radius  
+    280,40 // major radius, minor radius  
     rotate <90, 0, 0> // <x°, y°, z°>
-    translate <0, 25, 0> // <x, y, z>
-    pigment {color rgb colorOuterPart}
+    pigment {color rgb colorHeadband}
 };
 
-#declare BaseCutter = cylinder {
-    <0, 0, -210>, <0, 0, 210>, 335 // center of one end, center of other end, radius
-    pigment {color rgb colorInnerPart}
+
+#declare Cutoff = union {
+    cylinder {
+        <0, -325, 0>, <0, -30, 0>, 300 // center of one end, center of other end, radius
+    }
+    
+//    cylinder {
+//        <0, -20, -50>, <0, -10, 50>, 255 // center of one end, center of other end, radius
+//        
+//    }
 };
 
-#declare Headband = difference {    
-    object {Base}
-    union {
-        object {BaseCutter}
+#declare Headband = difference{
+    intersection {
+        object {Base}
         object {
-            BaseCutter
-            rotate <90, 0, 0> // <x°, y°, z°>
-            translate <0, -210, 0> // <x, y, z>
+            Base
+            translate <0, -33, 0> // <x, y, z>
+        }
+         object {
+            Base
+            translate <-25, 0, 0> // <x, y, z>
+        }
+         object {
+            Base
+            translate <25, 0, 0> // <x, y, z>
         }
     }
+    object {Cutoff}
+    
 };
 
-// 2 CSG: 1 Union, 1 Diff
+// 2 CSG: 1 Intersection (3 für Binaerbaum), 1 Diff

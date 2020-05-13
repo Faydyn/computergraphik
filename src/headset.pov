@@ -8,6 +8,7 @@
 #include "colors.inc"
 #include "speakers.inc"
 #include "headband.inc"
+#include "speaker_headband_connector.inc"
 
 
 //camera { 
@@ -16,7 +17,7 @@
 //}
 
  camera {
-    location  <1000.0*sin(clock*2*pi), 800.0, -1000.0*cos(clock*2*pi)>
+    location  <1000.0*sin(clock*2*pi), max(800.0*cos(clock*2*pi),5.0), -1000.0*cos(clock*2*pi)>
     look_at   <0.0, 400.0,  0.0>
 }
 
@@ -40,19 +41,26 @@ light_source {
 
 /////////////////////HEADER END /////////////////////////////
 
-#declare HEADSET = union{
+#declare HEADSET = union {
     object {
         Speakers
-        translate <0, 200, 0> // <x, y, z>
-        scale 1.5*<1.0, 1.0, 1.0> // <x, y, z>
+        translate <0, 225, 0> // <x, y, z>
+        scale 1.6*<1.0, 1.0, 1.0> // <x, y, z>
     }
     object{
         Headband
-        translate <0, 440, 0> // <x, y, z>
+        translate <0, 470, 0> // <x, y, z>
+        scale 1.2*<1.0, 1.0, 1.0> // <x, y, z>
+    }
+    object{
+        Connectors
+        translate <0, 375, 0> // <x, y, z>
     }
 };
 
-object{HEADSET}
+object{HEADSET
+translate <0, -90, 0> // <x, y, z>
+}
 
 
 
