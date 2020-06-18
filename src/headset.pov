@@ -1,40 +1,36 @@
 // Modeling a Headset
-// Date: 12.05.2020
+// Date: 12.06.2020
 // Author: Nils Seitz (218205308)
 // 1 Unit of Length correspondents to 1 mm
 
 #version 3.7;
-
-
-
-//camera { 
-//	location <0.0, 800.0, -1000.0> // fester Standpunkt// Eine Kamera in 80 cm Hoehe, 1 Meter in negativer z-Richtung entfernt location <0.0, 800.0, -1000.0> // fester Standpunkt
-//	look_at <0.0, 400.0, 0.0>
-//}
+#include "colors.inc"
 
  camera {
-    location  <4500,8000, -10000.0>
-    look_at   <1000.0, 2500.0,  0.0>
+    location  <5000+((3050*(sqrt(2)/2))-5000)*clock-10,4000-3980*clock, -2000+((3050*(sqrt(2)/2))+2000)*clock-10>
+    look_at   <3025*(sqrt(2)/2), 2300-2300*clock, 3025*(sqrt(2)/2) >
 }
+//REALLY NICE PERSPEC
+//camera {
+//    location  <5000+((3050*(sqrt(2)/2))-5000)*clock,4000-3800*clock, -2000+((3050*(sqrt(2)/2))+2000)*clock>
+//    look_at   <3050*(sqrt(2)/2), 2300-2300*clock, 3050*(sqrt(2)/2) >
+//}
 
 sky_sphere {
-	pigment{ // Himmelskugel - Ein schoener blauer Himmel pigment
+	pigment{ 
 		gradient y
 		color_map { [0.0 color blue 0.6] [1.0 color rgb 1] }
 	}
 }
-// Eine braune Ebene als Untergrund senkrecht auf der y-Achse durch den Punkt <0, -100, 0> // plane {<A, B, C>, D } where: A*x + B*y + C*z = D
 plane { 
     y, -100 
     pigment {color rgb <0.8, 0.6, 0.4>} 
     finish { ambient 0.6 diffuse 0.4}
 }
-
 light_source {
-	<500, 1500, -120> // Position der Lichtquelle 
-	color rgb< 1.0, 1.0, 1.0> // Farbe der Lichtquelle
+	<-300, 2500, -1020> 
+	color rgb< 1.0, 1.0, 1.0>
 }
-
 /////////////////////HEADER END /////////////////////////////
 
 
@@ -179,9 +175,11 @@ light_source {
     }
 };
 
-// object{HEADSET
-// translate <0, -90, 0> // <x, y, z>
-// }
+object{HEADSET
+    translate <0, -40, 0> // <x, y, z>
+    scale 0.9*<1.0, 1.0, 1.0>
+}
+
 
 #declare Kabine = difference{ 
     box {
@@ -189,22 +187,63 @@ light_source {
         pigment{color rgb colorHeadband}
     }
     box {
-        <100, 100, -1>, <2900, 2900, 2900> // <x, y, z> near lower left corner, <x, y, z> far upper right corner
+        
+        <100, 100, -1>, <2900, 2900, 2900> 
+        pigment{Brown}
+        // <x, y, z> near lower left corner, <x, y, z> far upper right corner
     }
+
     rotate <0, -45, 0> // <x°, y°, z°>
+   // translate<-korrektur,0, -korrektur >     
 };
 
-object{Kabine}
 
-object{
-    Kabine
-    translate <3050, 0, 3050> // <x, y, z>   
+
+// Kabinen sollen auf folgender Gerade verschoben werden:
+// - in XZ-Ebene
+// - 45° zur X-Achse => cos(pi/4) => sqrt(2)/2
+// - 45° zur Z-Achse => sin(pi/4) => sqrt(2)/2
+// - monoton steigend (vom 3. -> 1. Quadranten)
+// Da aber die 
+#local ratioSideLength45Degree = 3000*(sqrt(2)/2);
+#local ratioSpareDistance45Degree= 50*(sqrt(2)/2);
+#local ratiototalLength45Degree = ratioSideLength45Degree + ratioSpareDistance45Degree;
+
+#declare Pointer = cone {
+    <0, 0, 0>, 0.1 // <x, y, z>, center & radius of one end
+    <-5000, 4000, -5000>, 190 // <x, y, z>, center & radius of the other end
+    
+} 
+object {
+    Pointer
+    pigment{Green}
+}
+#declare Pointer2 = cone {
+    <(ratioSideLength45Degree), 0, (ratioSideLength45Degree)>, 0.1 // <x, y, z>, center & radius of one end
+    <-5000, 4000, -5000>, 190 // <x, y, z>, center & radius of the other end
+    
+} 
+object {
+    Pointer2
+    pigment{Green}
+}
+#declare Pointer3 = cone {
+    <ratiototalLength45Degree, 0, ratiototalLength45Degree>, 0.1 // <x, y, z>, center & radius of one end
+    <-5000, 4000, -5000>, 190 // <x, y, z>, center & radius of the other end
+    
+} 
+object {
+    Pointer3
+    pigment{Green}
 }
 
-object{
-    Kabine
-    translate <6100, 0, 6100> // <x, y, z>   
-}
+
+//#for (Identifier, Start, End [, Step]) - INCLUSIVE!!!!!! 0,1,2 -> 3x
+ #for (i, 0, 2) 
+   object{ Kabine
+           translate<ratiototalLength45Degree*i,0, ratiototalLength45Degree*i >
+         } 
+ #end 
 
 
 
