@@ -5,32 +5,177 @@
 
 #version 3.7;
 #include "colors.inc"
+#include "textures.inc"
+#include "rotationsvase.inc"
 
- camera {
-    location  <5000+((3050*(sqrt(2)/2))-5000)*clock-10,4000-3980*clock, -2000+((3050*(sqrt(2)/2))+2000)*clock-10>
-    look_at   <3025*(sqrt(2)/2), 2300-2300*clock, 3025*(sqrt(2)/2) >
-}
-//REALLY NICE PERSPEC
-//camera {
-//    location  <5000+((3050*(sqrt(2)/2))-5000)*clock,4000-3800*clock, -2000+((3050*(sqrt(2)/2))+2000)*clock>
-//    look_at   <3050*(sqrt(2)/2), 2300-2300*clock, 3050*(sqrt(2)/2) >
+// camera {
+//    location  <-1700+((150*(sqrt(2)/2))-1500)*clock-10,4000-2200, 2400+((150*(sqrt(2)/2))+1200)*clock-10>
+//    look_at   <400*(sqrt(2)/2), 500, 00*(sqrt(2)/2) >
 //}
 
-sky_sphere {
-	pigment{ 
-		gradient y
-		color_map { [0.0 color blue 0.6] [1.0 color rgb 1] }
-	}
+// camera {
+//    location  <1500+((3050*(sqrt(2)/2))-5000)*clock-10,1900-3980*clock, -1200+((3050*(sqrt(2)/2))+2000)*clock-10>
+//    look_at   <400*(sqrt(2)/2), 1300, 400*(sqrt(2)/2) >
+//}
+//REALLY NICE PERSPEC
+camera {
+    //location  <5000.0*sin(clock*2*pi), 4800.0, -5000.0*cos(clock*2*pi)> 
+    location  <3000+((-999*(sqrt(2)/2))-3000)*clock,4000-3800*clock, -2000+((1899*(sqrt(2)/2))+2000)*clock>
+    look_at   <5000*(sqrt(2)/2), 500, 19000*(sqrt(2)/2) >
 }
+
+
+  sky_sphere {
+    pigment {
+      gradient y
+      color_map {
+        [(1-cos(radians(70)))/2 color rgb <0.8, 0.1, 0>]
+        [(1-cos(radians(160)))/2 color Blue]
+      }
+      scale 2
+      translate -1
+    }
+  }
+//https://www.povray.org/documentation/view/3.6.1/91/
+//http://www.f-lohmueller.de/pov_tut/tex/tex_160e.htm
+// http://texlib.povray.org/wood-browsing_1.html
+// http://www.imagico.de/imenu/insert_menu.php
+#declare Photons=on;
+
+global_settings {
+  assumed_gamma 1.0
+  max_trace_level 5
+  #if (Photons)          // global photon block
+    photons {
+      spacing 0.02                 // specify the density of photons
+      count 10000               // alternatively use a total number of photons
+
+      //gather min, max            // amount of photons gathered during render [20, 100]
+      //media max_steps [,factor]  // media photons
+      //jitter 1.0                 // jitter phor photon rays
+      //max_trace_level 5          // optional separate max_trace_level
+      //adc_bailout 1/255          // see global adc_bailout
+      //save_file filename       // save photons to file
+      //load_file filename       // load photons from file
+      //autostop 0                 // photon autostop option
+      //radius 10                  // manually specified search radius
+      // (---Adaptive Search Radius---)
+      //steps 1
+      //expand_thresholds 0.2, 40
+    }
+
+  #end
+}
+
+#declare M_Glass=    // Glass material
+material {
+  texture {
+    pigment {rgbt 1}
+    finish {
+      ambient 0.0
+      diffuse 0.05
+      specular 0.6
+      roughness 0.005
+      reflection {
+        0.1, 1.0
+        fresnel on
+      }
+      conserve_energy
+    }
+  }
+  interior {
+    ior 1.5
+    fade_power 1001
+    fade_distance 0.9
+    fade_color <0.5,0.8,0.6>
+  }
+}
+  sky_sphere {
+      
+    pigment {
+      gradient y
+      color_map {
+        [0.000 0.002 color rgb <1.0, 0.2, 0.0>
+                     color rgb <1.0, 0.2, 0.0>]
+        [0.002 0.200 color rgb <0.8, 0.1, 0.0>
+                     color rgb <0.2, 0.2, 0.3>]
+      }
+      scale 2
+      translate -1
+    }
+    pigment {
+      bozo
+      turbulence 0.65
+      octaves 6
+      omega 0.7
+      lambda 2
+      color_map {
+          [0.0 0.1 color rgb <0.85, 0.85, 0.85>
+                   color rgb <0.75, 0.75, 0.75>]
+          [0.1 0.5 color rgb <0.75, 0.75, 0.75>
+                   color rgbt <1, 1, 1, 1>]
+          [0.5 1.0 color rgbt <1, 1, 1, 1>
+                   color rgbt <1, 1, 1, 1>]
+      }
+      scale <0.2, 0.5, 0.2>
+    }
+    rotate -135*x
+  }
+
 plane { 
     y, -100 
-    pigment {color rgb <0.8, 0.6, 0.4>} 
-    finish { ambient 0.6 diffuse 0.4}
+    texture{
+        DMFLightOak
+        scale 70*<1.0, 1.0, 1.0> // <x, y, z>
+        finish{
+            diffuse 0.8
+            ambient 0.1
+        }
+    }
 }
 light_source {
-	<-300, 2500, -1020> 
-	color rgb< 1.0, 1.0, 1.0>
+	<500, 2500, 1500> 
+	color rgb 0.8*< 1.0, 1.0, 1.0>
+    photons {           // photon block for a light source
+    refraction on
+    reflection on
+  }
 }
+
+light_source {
+	<3000, 2500, -1500> 
+	color rgb 0.8*< 1.0, 0.3, 0.3>
+    photons {           // photon block for a light source
+    refraction on
+    reflection on
+  }
+}
+
+#declare Sonne =  
+   light_source
+   {
+        <100000, 1000.0, 1100000.0>         // Position der Lichtquelle
+        color rgb <0.8, 0.1, 0>       // Farbe des Lichtes
+                // Art der Lichtquelle
+        
+        
+                   // Abschwaechung zum Rand
+                 // falloff (auesserer Radius in Grad)  
+        // Darstellung der Lichtquelle in der Szene als durchsichtige Kugel
+        looks_like { 
+                sphere { <0, 0, 0>, 400000 
+                
+                pigment { 
+                    gradient y
+      color_map {
+        [0.5 color rgb <0.8, 0.1, 0>]
+        [1 color Blue]
+      }}
+                finish {ambient 0.6} 
+                }
+        }
+   }
+   //object{Sonne}
 /////////////////////HEADER END /////////////////////////////
 
 
@@ -175,27 +320,43 @@ light_source {
     }
 };
 
-object{HEADSET
+object{
+    HEADSET
     translate <0, -40, 0> // <x, y, z>
     scale 0.9*<1.0, 1.0, 1.0>
 }
 
 
+// 2x2m und 20cm dick
+
+
 #declare Kabine = difference{ 
     box {
-        <0, 0, 0>, <3000, 3000, 3000> // <x, y, z> near lower left corner, <x, y, z> far upper right corner
-        pigment{color rgb colorHeadband}
+        <0, 0, 0>, <3010, 3010, 3010> // <x, y, z> near lower left corner, <x, y, z> far upper right corner
+       
+        texture {
+            Glass
+            pigment {color rgbt <0.8,0.8,0.8,0.4>}
+        }
     }
     box {
         
-        <100, 100, -1>, <2900, 2900, 2900> 
-        pigment{Brown}
-        // <x, y, z> near lower left corner, <x, y, z> far upper right corner
+        <5, 5, -1>, <3005, 3005, 3005> 
+        
+         material { M_Glass }
+
+  photons {  // photon block for an object
+    target 1.0
+    refraction on
+    reflection on
+  }
     }
 
     rotate <0, -45, 0> // <x°, y°, z°>
-   // translate<-korrektur,0, -korrektur >     
+     
 };
+
+
 
 
 
@@ -204,50 +365,100 @@ object{HEADSET
 // - 45° zur X-Achse => cos(pi/4) => sqrt(2)/2
 // - 45° zur Z-Achse => sin(pi/4) => sqrt(2)/2
 // - monoton steigend (vom 3. -> 1. Quadranten)
-// Da aber die 
-#local ratioSideLength45Degree = 3000*(sqrt(2)/2);
-#local ratioSpareDistance45Degree= 50*(sqrt(2)/2);
-#local ratiototalLength45Degree = ratioSideLength45Degree + ratioSpareDistance45Degree;
+// Strecke ist Länge der Kabine (3000mm = 300cm = 3m) + Abstand (500mm = 50 cm = 0.5m)
 
-#declare Pointer = cone {
-    <0, 0, 0>, 0.1 // <x, y, z>, center & radius of one end
-    <-5000, 4000, -5000>, 190 // <x, y, z>, center & radius of the other end
-    
-} 
-object {
-    Pointer
-    pigment{Green}
-}
-#declare Pointer2 = cone {
-    <(ratioSideLength45Degree), 0, (ratioSideLength45Degree)>, 0.1 // <x, y, z>, center & radius of one end
-    <-5000, 4000, -5000>, 190 // <x, y, z>, center & radius of the other end
-    
-} 
-object {
-    Pointer2
-    pigment{Green}
-}
-#declare Pointer3 = cone {
-    <ratiototalLength45Degree, 0, ratiototalLength45Degree>, 0.1 // <x, y, z>, center & radius of one end
-    <-5000, 4000, -5000>, 190 // <x, y, z>, center & radius of the other end
-    
-} 
-object {
-    Pointer3
-    pigment{Green}
-}
-
+#local ratio45Degree = (sqrt(2)/2);
+#local ratioDistanceToWall45Degree = 900*ratio45Degree;
+#local ratioLength45Degree = 3500*ratio45Degree; 
 
 //#for (Identifier, Start, End [, Step]) - INCLUSIVE!!!!!! 0,1,2 -> 3x
- #for (i, 0, 2) 
-   object{ Kabine
-           translate<ratiototalLength45Degree*i,0, ratiototalLength45Degree*i >
-         } 
+ 
+#declare VaseMitBall = union{
+object {
+    Vase
+    pigment{Silver}
+    scale 25*<1.0, 1.0, 1.0> // <x, y, z>
+    translate <0, 101, 1800> // <x, y, z>
+    rotate <0, -45, 0> // <x°, y°, z°>
+    translate <450*ratio45Degree, 0, 450*ratio45Degree> // <x, y, z>
+    finish {
+        specular 0.25
+        roughness .05
+        reflection { 
+            0.9 metallic 
+        }
+        brilliance 4
+        
+    }
+}
+
+
+
+
+sphere {
+    <0, 0, 0>, 100 // <x, y, z>, radius
+
+    translate <0, 101, 1800> // <x, y, z>
+    rotate <0, -45, 0> // <x°, y°, z°>
+    translate <450*ratio45Degree, 2*pi*250+69, 450*ratio45Degree> // <x, y, z>
+    
+   material { M_Glass }
+
+  photons {  // photon block for an object
+    target 1.0
+    refraction on
+    reflection on
+  }
+}
+}
+
+#declare Tisch = union{ 
+    box {
+        <0, 900, 0>, <2000, 1100, 2000> // <x, y, z> near lower left corner, <x, y, z> far upper right corner
+    }
+    cylinder {
+        <50, 0, 50>, <50, 900, 50>, 40 // center of one end, center of other end, radius
+    }
+    cylinder {
+        <1950, 0, 50>, <1950, 900, 50>, 40 // center of one end, center of other end, radius
+    }
+    cylinder {
+        <50, 0, 1950>, <50, 900, 1950>, 40 // center of one end, center of other end, radius
+    }
+    cylinder {
+        <1950, 0, 1950>, <1950, 900, 1950>, 40 // center of one end, center of other end, radius
+    }
+    pigment { color rgb <0.254, 0.102 , 0.018> }
+    finish { 
+        ambient 0.4 
+        diffuse 1  
+        roughness 1
+        reflection { 
+                0.05 
+        }
+    }
+    texture {
+        Cherry_Wood
+        scale 150*<1.0, 1.0, 1.0> // <x, y, z>
+    }
+              
+        
+    
+};
+
+
+
+#for (i, 0, 2) 
+union{
+   object{ Kabine         } 
+   
+object{
+    Tisch
+    translate<0,0,900>
+    rotate <0, -45, 0> // <x°, y°, z°>
+    translate <ratioDistanceToWall45Degree, 0, ratioDistanceToWall45Degree> // <x, y, z>
+}
+   object{ VaseMitBall         } 
+translate<ratioLength45Degree*i,0, ratioLength45Degree*i >
+}
  #end 
-
-
-
-
-
-
-
