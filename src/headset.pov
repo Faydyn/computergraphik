@@ -8,34 +8,42 @@
 #include "textures.inc"
 #include "rotationsvase.inc"
 
+// 1. CLOSE-UP CAMERA
+ camera {
+    location  <50, 2060, 2790 >
+    look_at   <450, 0, 3000 >
+}
+
+
 // camera {
 //    location  <-1700+((150*(sqrt(2)/2))-1500)*clock-10,4000-2200, 2400+((150*(sqrt(2)/2))+1200)*clock-10>
 //    look_at   <400*(sqrt(2)/2), 500, 00*(sqrt(2)/2) >
 //}
-
-// camera {
-//    location  <1500+((3050*(sqrt(2)/2))-5000)*clock-10,1900-3980*clock, -1200+((3050*(sqrt(2)/2))+2000)*clock-10>
-//    look_at   <400*(sqrt(2)/2), 1300, 400*(sqrt(2)/2) >
+//
+//camera {
+//    //location <5500+10000*sin(2*pi*clock), 3800, 6500-10000*cos(2*clock*pi)> 
+//    location  <1700+((3050*(sqrt(2)/2))-5000)*clock-10,3800, -3700+((3050*(sqrt(2)/2))+2000)*clock-10>
+//    look_at   <2000*(sqrt(2)/2), 2100, 1600*(sqrt(2)/2) >
 //}
 //REALLY NICE PERSPEC
-camera {
-    //location  <5000.0*sin(clock*2*pi), 4800.0, -5000.0*cos(clock*2*pi)> 
-    location  <3000+((-999*(sqrt(2)/2))-3000)*clock,4000-3800*clock, -2000+((1899*(sqrt(2)/2))+2000)*clock>
-    look_at   <5000*(sqrt(2)/2), 500, 19000*(sqrt(2)/2) >
-}
+//camera {
+//    location  <5000.0*sin(clock*2*pi), 4800.0, -5000.0*cos(clock*2*pi)> 
+//    //location  <3000+((-999*(sqrt(2)/2))-3000)*clock,4000-3800*clock, -2000+((1899*(sqrt(2)/2))+2000)*clock>
+//    look_at   <5000*(sqrt(2)/2), 500, 19000*(sqrt(2)/2) >
+//}
 
 
-  sky_sphere {
-    pigment {
-      gradient y
-      color_map {
-        [(1-cos(radians(70)))/2 color rgb <0.8, 0.1, 0>]
-        [(1-cos(radians(160)))/2 color Blue]
-      }
-      scale 2
-      translate -1
-    }
-  }
+//  sky_sphere {
+//    pigment {
+//      gradient y
+//      color_map {
+//        [(1-cos(radians(100)))/2 color rgb <0.8, 0.1, 0>]
+//        [(1-cos(radians(190)))/2 color Blue]
+//      }
+//      scale 2
+//      translate -1
+//    }
+//  }
 //https://www.povray.org/documentation/view/3.6.1/91/
 //http://www.f-lohmueller.de/pov_tut/tex/tex_160e.htm
 // http://texlib.povray.org/wood-browsing_1.html
@@ -70,7 +78,7 @@ global_settings {
 #declare M_Glass=    // Glass material
 material {
   texture {
-    pigment {rgbt 1}
+    pigment {rgbt <1,1,1,0.8>}
     finish {
       ambient 0.0
       diffuse 0.05
@@ -122,34 +130,37 @@ material {
     rotate -135*x
   }
 
-plane { 
-    y, -100 
-    texture{
-        DMFLightOak
-        scale 70*<1.0, 1.0, 1.0> // <x, y, z>
-        finish{
-            diffuse 0.8
-            ambient 0.1
-        }
+plane {               // checkered floor
+  y, -100
+  texture
+  {
+    pigment {
+      checker
+      color rgb (1/256)*<25, 16, 8>
+      color rgb (1/256)*<47, 32, 15>
+      scale 200
     }
-}
-light_source {
-	<500, 2500, 1500> 
-	color rgb 0.8*< 1.0, 1.0, 1.0>
-    photons {           // photon block for a light source
-    refraction on
-    reflection on
-  }
-}
 
-light_source {
-	<3000, 2500, -1500> 
-	color rgb 0.8*< 1.0, 0.3, 0.3>
-    photons {           // photon block for a light source
-    refraction on
-    reflection on
   }
+ 
 }
+//light_source {
+//	<500, 2500, 1500> 
+//	color rgb 0.8*< 1.0, 1.0, 1.0>
+//    photons {           // photon block for a light source
+//    refraction on
+//    reflection on
+//  }
+//}
+//
+//light_source {
+//	<3000, 2500, -1500> 
+//	color rgb 0.8*< 1.0, 0.3, 0.3>
+//    photons {           // photon block for a light source
+//    refraction on
+//    reflection on
+//  }
+//}
 
 #declare Sonne =  
    light_source
@@ -175,7 +186,7 @@ light_source {
                 }
         }
    }
-   //object{Sonne}
+   object{Sonne}
 /////////////////////HEADER END /////////////////////////////
 
 
@@ -251,7 +262,7 @@ light_source {
         object {Base}
         object {
             Base
-            translate <0, -33, 0> // <x, y, z>
+            translate <0, 10, 0> // <x, y, z>
         }
          object {
             Base
@@ -270,14 +281,14 @@ light_source {
 #declare Connector = object {
     Headband
     rotate <0, 90, 0> // <x°, y°, z°>
-    translate <550, 0, 0> // <x, y, z>
+    translate <410, -15, 0> // <x, y, z>
     scale 0.6*<1.0, 1.0, 1.0> // <x, y, z>
 };
 
 #declare Holder = cylinder {
     <0, 0, -190>, <0, 0, -130>, 23 // center of one end, center of other end, radius
     rotate <15, 0, 0> // <x°, y°, z°>
-    translate <330, -50, 0> // <x, y, z>
+    translate <245, -65, 0> // <x, y, z>
 }
 
 #declare Connectors = union {
@@ -289,7 +300,7 @@ light_source {
     object {Holder}
     object {
         Holder
-        translate <-660, 0, 0> // <x, y, z>
+        translate <-490, 0, 0> // <x, y, z>
     } 
     object {
         Holder
@@ -297,7 +308,7 @@ light_source {
     }
     object {
         Holder
-        translate <-660, 0, 0> // <x, y, z>
+        translate <-490, 0, 0> // <x, y, z>
         rotate <0, 180, 0> // <x°, y°, z°>
     }
 };
@@ -309,6 +320,7 @@ light_source {
         translate <0, 225, 0> // <x, y, z>
         scale 1.6*<1.0, 1.0, 1.0> // <x, y, z>
     }
+    
     object{
         Headband
         translate <0, 470, 0> // <x, y, z>
@@ -316,15 +328,12 @@ light_source {
     }
     object{
         Connectors
-        translate <0, 375, 0> // <x, y, z>
+        translate <0, 365, 0> // <x, y, z>
+        scale <1.4, 1.0, 1.0> // <x, y, z>
     }
 };
 
-object{
-    HEADSET
-    translate <0, -40, 0> // <x, y, z>
-    scale 0.9*<1.0, 1.0, 1.0>
-}
+
 
 
 // 2x2m und 20cm dick
@@ -332,16 +341,19 @@ object{
 
 #declare Kabine = difference{ 
     box {
-        <0, 0, 0>, <3010, 3010, 3010> // <x, y, z> near lower left corner, <x, y, z> far upper right corner
+        <0, 0, 0>, <3005, 3010, 3010> // <x, y, z> near lower left corner, <x, y, z> far upper right corner
        
-        texture {
-            Glass
-            pigment {color rgbt <0.8,0.8,0.8,0.4>}
-        }
+        material { M_Glass }
+
+  photons {  // photon block for an object
+    target 1.0
+    refraction off
+    reflection off
+  }
     }
     box {
-        
-        <5, 5, -1>, <3005, 3005, 3005> 
+        <-1, 5, -1>, <3000, 3005, 3005>
+        //<5, 5, -1>, <3005, 3005, 3005> CLOSED SIDES 
         
          material { M_Glass }
 
@@ -392,24 +404,28 @@ object {
     }
 }
 
-
-
-
-sphere {
-    <0, 0, 0>, 100 // <x, y, z>, radius
-
-    translate <0, 101, 1800> // <x, y, z>
+light_source
+   {
+        <0.0, 60.0, 0.0>         // Position der Lichtquelle
+        color rgb <1,1,1>       // Farbe des Lichtes
+  //      spotlight               // Art der Lichtquelle
+  //      point_at <0, -10, 0>      // Richtung des Spotlichtes
+  //      radius 360              // hotspot (innerer Radius in Grad)
+  //      tightness 0             // Abschwaechung zum Rand
+  //      falloff 0              // falloff (auesserer Radius in Grad)  
+        // Darstellung der Lichtquelle in der Szene als durchsichtige Kugel
+        translate <0, 101, 1800> // <x, y, z>
     rotate <0, -45, 0> // <x°, y°, z°>
     translate <450*ratio45Degree, 2*pi*250+69, 450*ratio45Degree> // <x, y, z>
+        looks_like { 
+                sphere {
+    <0, 0, 0>, 100 // <x, y, z>, radius
     
-   material { M_Glass }
-
-  photons {  // photon block for an object
-    target 1.0
-    refraction on
-    reflection on
-  }
+   pigment{White}
 }
+        }
+   }
+
 }
 
 #declare Tisch = union{ 
@@ -438,8 +454,9 @@ sphere {
         }
     }
     texture {
-        Cherry_Wood
-        scale 150*<1.0, 1.0, 1.0> // <x, y, z>
+        Cork
+        scale 800*<1.0, 1.0, 1.0> // <x, y, z>
+        rotate -45*y
     }
               
         
@@ -448,17 +465,27 @@ sphere {
 
 
 
-#for (i, 0, 2) 
+#for (i, 0, 0) 
 union{
-   object{ Kabine         } 
-   
-object{
-    Tisch
-    translate<0,0,900>
-    rotate <0, -45, 0> // <x°, y°, z°>
-    translate <ratioDistanceToWall45Degree, 0, ratioDistanceToWall45Degree> // <x, y, z>
-}
-   object{ VaseMitBall         } 
+    //object{ Kabine } 
+    
+        object{
+            HEADSET
+            scale 0.9*<1.0, 1.0, 1.0>
+            rotate <105.9, 0, 0> // <x°, y°, z°> - Neige etwas mehr als 90°
+            translate <ratioDistanceToWall45Degree-500*ratio45Degree, 1354, ratioDistanceToWall45Degree+2500*ratio45Degree> // <x, y, z>
+        }
+    // Es wurde mittel Intersection geprüft, ob Tisch und Headset sich schneiden
+        object{
+            Tisch
+            translate<0,0,900>
+            rotate <0, -45, 0> // <x°, y°, z°>
+            translate <ratioDistanceToWall45Degree, 0, ratioDistanceToWall45Degree> // <x, y, z>
+        }
+    
+   //object{ VaseMitBall } 
+
 translate<ratioLength45Degree*i,0, ratioLength45Degree*i >
 }
- #end 
+
+#end 
