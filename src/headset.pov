@@ -17,8 +17,8 @@ Beispielsweise [F], falls die naechsten Zeilen fuer Aufgabe f) relevant sind.
 #version 3.7;
 
 #include "colors.inc"
-#include "textures.inc"
-#include "rotationsvase.inc"
+#include "textures.inc" 
+#include "rotationsvase.inc" // ist included
 
 // Angabe der 3 Kamerapositionen [F] - jeweils auskommentieren, ueberschreiben sich -> letzte zaehlt
 camera{
@@ -214,7 +214,7 @@ global_settings{
     pigment{color rgb colorHeadband}
 };
 
-//Die beiden Zylinder bilden ein "Kreuz".
+//Die beiden Zylinder bilden ein "Kreuz"
 #declare Cutoff = union{
     cylinder{
         <0, -325, 0>, <0, -30, 0>, 300 // center of one end, center of other end, radius
@@ -224,7 +224,7 @@ global_settings{
     }    
 };
 
-// Die Schnittmenge der Tori erzeugt ein dünnes Kopfband, welches von dem Zylinderkreuz ausgehoelt und seitlich abgeschnitten wird ("halbiert"), sodass es wie der Bügel aussieht.
+// Die Schnittmenge der Tori erzeugt ein dünnes Kopfband, welches von dem Zylinderkreuz ausgehoelt und seitlich abgeschnitten wird ("halbiert"), sodass es wie der Bügel aussieht
 #declare Headband = difference{
     intersection{
         object{Base}
@@ -314,7 +314,7 @@ global_settings{
     difference{
         box{
             <0, 0, 0>, <3005, 3010, 3005> // <x, y, z> near lower left corner, <x, y, z> far upper right corner
-            material{M_Glass}
+            material{M_Glass} // [E]
             photons{
                 target 1.0
                 refraction off
@@ -324,7 +324,7 @@ global_settings{
 
         box{ // Herausschneiden der gewuenschten Grundflaeche von 3000mm x 3000mm [C]
             <-1, 5, -1>, <3000, 3005, 3000>   // y=5, da Kabine einen Boden braucht, x=z=-1 fuer sichere Differenz (bei =0 manchmal komisch)     
-            material{M_Glass}
+            material{M_Glass} // [E]
             photons{
                 target 1.0
                 refraction on
@@ -339,7 +339,7 @@ global_settings{
             <0,5,0>, <3000, 3005, 0.01>
             texture{
                 pigment{
-                    image_map{png "headset_closeup.png"
+                    image_map{png "headset_closeup.png" // ist included
                         map_type 0 
                         interpolate 3 
                         once
@@ -445,9 +445,9 @@ global_settings{
 
 #local ratioDistanceToWall45Degree = 900*ratio45Degree; // Hilfsdistanz zum Platzieren in der Kabine
 
-// Erst erfolgt das Arrangement der Kabine durch Union, danach die Verschiebung mit einer Variable, die durch die Schleife konstant steigt.
+// Erst erfolgt das Arrangement der Kabine durch Union, danach die Verschiebung mit einer Variable, die durch die Schleife konstant steigt
 // Das Headset wird auf dem Tisch und weitere Objekte in der Kabine platziert [C]
-// Mittels einer Schleife wird die Vereinigung der Kabine nun um jeweils ratioLength45Degree, was zuvor definiert wurde, verschoben. [D]
+// Mittels einer Schleife wird die Vereinigung der Kabine nun um jeweils ratioLength45Degree, was zuvor definiert wurde, verschoben [D]
 #for (i, 0, 2) 
     union{
         object{Kabine}
