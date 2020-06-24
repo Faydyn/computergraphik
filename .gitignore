@@ -1,5 +1,5 @@
 *.DS_Store
-/final
 /SeitzNils
 /out/
+/*_examples
 povray_axis.png

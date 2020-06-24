@@ -2,13 +2,20 @@
 
 VCS for university module 'Computergraphik' (Semester IV, B. Sc. Computer Science)
 
-## Style Guide Lines
+## Close-up
 
-* Everything in one .pov, no .inc includen
-* #macro for Types with Parameters
+![Headset Close-up](final/headset_closeup.png)
 
-## Questions
+## Birdview
 
-* How mathematically accurat how numbers to be?
-  i. e. ATM its just Numbers that "fit". Do more in terms of equations etc
+![Headset Birdview](final/headset_birdview.png)
+
+## Own Angle
+
+![Headset Own Angle](final/headset_ownangle.png)
+
+## Binary CSG-Tree
+
+![Binary CSG-Tree](final/CSG_BinaryTree.png)
+
   
