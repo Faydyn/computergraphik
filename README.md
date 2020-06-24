@@ -14,6 +14,6 @@ VCS for university module 'Computergraphik' (Semester IV, B. Sc. Computer Scienc
 
 ![Headset Own Angle](final/headset_ownangle.png)
 
-## Binary CSG-Tree
+## Binary CSG-Tree of Headset
 
-![Binary CSG-Tree](final/headset_ownangle.png)
+[Binary CSG-Tree](final/CSG_BinaryTree.png)
