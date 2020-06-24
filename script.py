@@ -3,7 +3,7 @@
 import sys
 import numpy as np
 
-args = sys.argv[1:]
+args = sys.argv[1:]  # arg can be number of lines, i.e. precision of sin^2. >512 seemed to break Povray
 
 y = np.linspace(0,2*np.pi, 101 if len(args) == 0 else int(str(args[0])),endpoint=True)
 x = np.sin(y)**2

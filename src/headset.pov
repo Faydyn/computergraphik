@@ -307,7 +307,7 @@ global_settings{
     }
 };
 
-///////////////////// ^ Headset [A] / Kabine v [C]/////////////////////////////
+///////////////////// ^ Headset [A] / Kabine v [C,D,E,F]/////////////////////////////
 
 // Kabine ist eine Flaeche von 3x3 Metern mit 3m Hoehe, und ausserdem 
 #declare Kabine = union{
@@ -459,7 +459,7 @@ global_settings{
             translate <ratioDistanceToWall45Degree-500*ratio45Degree, 1354, ratioDistanceToWall45Degree+2500*ratio45Degree> // <x, y, z>
         }
 
-        // Es wurde mittel Intersection geprüft, ob Tisch und Headset sich schneiden
+        // Es wurde mittels Intersection geprüft, ob Tisch und Headset sich schneiden
         object{
             Tisch
             translate<0,0,900>
