@@ -15,7 +15,7 @@ results = '\n'.join([f'10*<{xi:.4f},{yi:.4f}>,' for xi,yi in data])[:-1]
 
 settext = f'#declare Vase =\nsor{{ {len(data)},\n{results} }}'
 
-with open("/Users/nilsseitz/Coding/Povray/computergraphik/src/rotationsvase.inc","w") as f:
+with open("/src/rotationsvase.inc","w") as f:
     f.write(settext)
 
 

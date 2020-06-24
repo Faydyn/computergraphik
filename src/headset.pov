@@ -8,6 +8,9 @@ Quellen:
 - http://www.f-lohmueller.de/pov_tut/tex/tex_160e.htm
 - http://texlib.povray.org/wood-browsing_1.html
 - http://www.imagico.de/imenu/insert_menu.php
+
+Die relevanten Zeilen werden jeweils mit einem Buchstaben fuer die jeweilige Aufgabe in eckigen Klammern gekennzeichnet:
+Beispielsweise [F], falls die naechsten Zeilen fuer Aufgabe f) relevant sind.
 */
 
 /////////////////////HEADER/////////////////////////////
@@ -17,21 +20,45 @@ Quellen:
 #include "textures.inc"
 #include "rotationsvase.inc"
 
-// (f) - Angabe der 3 Kamerapositionen
+// Angabe der 3 Kamerapositionen [F] - jeweils auskommentieren, ueberschreiben sich -> letzte zaehlt
 camera{
-// 1. Nahaufnahme des Kopfhörers
+// 1. Nahaufnahme des Kopfhoerers
+// [E]: sinnvolle Texturskalierungen - Tisch,
+//      Schatten: Schatten des Kopfhoerers selbst
     location  <0, 1960, 2590>
     look_at   <450, 500, 3000>
 
-// 2. Blick-schräg-von-oben-in alle-Kabinen
-    location  <2900+((3050*(sqrt(2)/2))-5000)*clock-10,4700, -3800+((3050*(sqrt(2)/2))+2000)*clock-10>
+// 2. Blick-schraeg-von-oben-in alle-Kabinen
+// [E]: sinnvolle Texturskalierungen - Tisch,
+//      Spiegelungen - Tischspiegelung im Boden, Glaskabine z.B. das orange Licht auf dem Dach oder blaue Licht der Lampen in der seitlichen Scheibe
+//      Schatten: Schatten der Kabinen von den Lampen in den Kabinen, Schatten des Lampenstaenders
+//      Lichtbrechung (Lampe, Tisch, Bild von oben durch Dachglas zu sehen)
+    location  <2890,4700, -3790>
     look_at   <2900*(sqrt(2)/2), 2500, 1900*(sqrt(2)/2)>
 
-// 3. selbstgewählte interessante Position
-    location  <-200,2050, 300>
-    look_at   <-750*(sqrt(2)/2), 1400, 3800*(sqrt(2)/2)>
+// 3. selbstgewaehlte interessante Position
+// [E]: sinnvolle Texturskalierungen - Tisch,
+//      Spiegelungen - In dem Lampenstaender spiegeln sich Kabine, Himmel und Erde
+
+    //location  <-200,2050, 300>
+    //look_at   <-750*(sqrt(2)/2), 1400, 3800*(sqrt(2)/2)>
 }
 
+// Boden mit Schachbrettmuster parallel zu je X- bzw. Z-Achse -> "Fliesen"
+// Als visuelle Hilfe: Kabinen diagonal zu Muster -> nichtachsenparallelen Gerade [D]
+plane{    
+    y, -100
+    texture{
+        pigment{
+            checker
+            color rgb (1/256)*<25, 16, 8>
+            color rgb (1/256)*<47, 32, 15>
+            scale 200
+        }
+    }
+}
+
+// Ein Himmel mit Wolken und Abendrot
 sky_sphere{
     pigment{
         gradient y
@@ -64,18 +91,7 @@ sky_sphere{
     rotate -135*x
 }
 
-plane{    
-    y, -100
-    texture{
-        pigment{
-            checker
-            color rgb (1/256)*<25, 16, 8>
-            color rgb (1/256)*<47, 32, 15>
-            scale 200
-        }
-    }
-}
-
+// Dazu eine Riesensonne, die das Abendrot erklaert
 #declare Sonne = light_source{
     <500000, 1000.0, 4400000.0>        
     color rgb <0.8, 0.1, 0>       
@@ -95,16 +111,16 @@ plane{
     } 
 }
 
-object{Sonne}
+object{Sonne} // [E] sichtbar auf Dach der Kabinen
 
 ///////////////////// ^ HEADER / SETUP v /////////////////////////////
 
-#declare Photons=on;
+#declare Photons=on; // Fuer Glass als Material
 global_settings{
     assumed_gamma 1.0
     max_trace_level 5
 
-    #if (Photons)          // global photon block
+    #if (Photons)
         photons{
             spacing 0.02
             count 10000
@@ -112,6 +128,7 @@ global_settings{
     #end
 }
 
+// Material der Kabinen [E]
 #declare M_Glass = material{
     texture{
         pigment{rgbt <1,1,1,0.8>}
@@ -145,6 +162,7 @@ global_settings{
 #local cabinLightColor = <0.1,0.8,0.9>;
 
 ///////////////////// ^ SETUP / CODE v /////////////////////////////
+///////////////////// Headset v [A]
 
 #declare OuterPart = cone{
     <0, -25, 0>, 0 // <x, y, z>, center & radius of one end
@@ -164,6 +182,7 @@ global_settings{
     pigment{color rgb colorEarCut}
 };
 
+// Ohrmuschel aus 3 Teilen
 #declare LeftSpeaker = difference{
     union{
         object{OuterPart}
@@ -182,18 +201,20 @@ global_settings{
     rotate <0, 180, 0> // <x°, y°, z°>
 };
 
+// "Spiegelung" bzw. Rotation einer zweiten Ohrmuschel, um ein Hoererpaar zu kreiieren 
 #declare Speakers = union{
     object{LeftSpeaker}
     object{RightSpeaker}
 };
 
-// Der Buegel ueber dem Kopf soll aus einem Torus gemacht werden
+// Der Bügel über dem Kopf soll aus der Schnittmenge 4 identischer Tori gemacht werden 
 #declare Base = torus{
     280,40 // major radius, minor radius  
     rotate <90, 0, 0> // <x°, y°, z°>
     pigment{color rgb colorHeadband}
 };
 
+//Die beiden Zylinder bilden ein "Kreuz".
 #declare Cutoff = union{
     cylinder{
         <0, -325, 0>, <0, -30, 0>, 300 // center of one end, center of other end, radius
@@ -203,6 +224,7 @@ global_settings{
     }    
 };
 
+// Die Schnittmenge der Tori erzeugt ein dünnes Kopfband, welches von dem Zylinderkreuz ausgehoelt und seitlich abgeschnitten wird ("halbiert"), sodass es wie der Bügel aussieht.
 #declare Headband = difference{
     intersection{
         object{Base}
@@ -236,6 +258,7 @@ global_settings{
     translate <245, -65, 25> // <x, y, z>
 };
 
+// Accessories: Kopfbügel in klein wiederverwenden mit "Schrauben", dass sich die Ohrmuscheln drehen koennen
 #declare Connectors = union{
     object{Connector}
 
@@ -263,6 +286,7 @@ global_settings{
     }
 };
 
+// Zusammensetzung der 3 Hauptteile
 #declare HEADSET = union{
     object{
         Speakers
@@ -283,10 +307,13 @@ global_settings{
     }
 };
 
+///////////////////// ^ Headset [A] / Kabine v [C]/////////////////////////////
+
+// Kabine ist eine Flaeche von 3x3 Metern mit 3m Hoehe, und ausserdem 
 #declare Kabine = union{
     difference{
         box{
-            <0, 0, 0>, <3005, 3010, 3010> // <x, y, z> near lower left corner, <x, y, z> far upper right corner
+            <0, 0, 0>, <3005, 3010, 3005> // <x, y, z> near lower left corner, <x, y, z> far upper right corner
             material{M_Glass}
             photons{
                 target 1.0
@@ -295,8 +322,8 @@ global_settings{
             }
         }
 
-        box{
-            <-1, 5, -1>, <3000, 3005, 3005>        
+        box{ // Herausschneiden der gewuenschten Grundflaeche von 3000mm x 3000mm [C]
+            <-1, 5, -1>, <3000, 3005, 3000>   // y=5, da Kabine einen Boden braucht, x=z=-1 fuer sichere Differenz (bei =0 manchmal komisch)     
             material{M_Glass}
             photons{
                 target 1.0
@@ -306,26 +333,27 @@ global_settings{
         }
     }
 
+    // Rand der Szene: Wand genau ueber der Kabine mit Nahaufnahme [C] 
     object{
         box{
-            <0,0,0>, <2*640, 2*480, 0.1>
+            <0,5,0>, <3000, 3005, 0.01>
             texture{
                 pigment{
-                    image_map{png "headset_pic1.png"
+                    image_map{png "headset_closeup.png"
                         map_type 0 
                         interpolate 3 
                         once
                     }
-                scale <2*640, 2*480, 0.1>
+                scale <3000, 3005, 0.01>
                 }    
             }
         }      
-        translate <1500-640, 2000-480, 2999.9> // <x, y, z>
+        translate <0, 0, 2999.99> // <x, y, z>
     }
     rotate <0, -45, 0> // <x°, y°, z°> 
 };
 
-#declare VaseMetallic = union{
+#declare VaseMetallic = union{ // aus Metall, Rotationskoerper (included), [C,E].
     object{
         Vase
         pigment{Silver}
@@ -342,7 +370,7 @@ global_settings{
         }
     }
 
-    light_source{
+    light_source{ // [E] -> Kopfhoerer und Kabinen werfen Schatten
         <0.0, 5.0, 0.0>         
         color rgb cabinLightColor      
         translate <0, 101, 1800> // <x, y, z>
@@ -364,7 +392,7 @@ global_settings{
     }   
 }
    
-#declare Tisch = union{
+#declare Tisch = union{ // zur Ablage der Headsets und aus Holz [C,E]
     box{
         <0, 900, 0>, <2000, 1100, 2000> // <x, y, z> near lower left corner, <x, y, z> far upper right corner
     }
@@ -405,14 +433,21 @@ global_settings{
 // Kabinen sollen auf folgender Gerade verschoben werden:
 // - in XZ-Ebene
 // - 45° zur X-Achse => cos(pi/4) => sqrt(2)/2
-// - 45° zur Z-Achse => sin(pi/4) => sqrt(2)/2 (siehe Ratios)
+// - 45° zur Z-Achse => sin(pi/4) => sqrt(2)/2 (siehe Ratios: ratio45Degree)
 // - monoton steigend (vom 3. -> 1. Quadranten)
+// ->Sichtbar am Schachbrett-Muster des Bodens (verlaeuft diagonal)
 
 // Ratio Distances
 #local ratio45Degree = (sqrt(2)/2);
-#local ratioDistanceToWall45Degree = 900*ratio45Degree;
-#local ratioLength45Degree = 3500*ratio45Degree; 
 
+#local ratioLength45Degree = 3505*ratio45Degree; 
+// Breite und Laenge der aeusseren Box der Kabine = 3005mm = 3,005m, dazu 50cm = 500mm [D]
+
+#local ratioDistanceToWall45Degree = 900*ratio45Degree; // Hilfsdistanz zum Platzieren in der Kabine
+
+// Erst erfolgt das Arrangement der Kabine durch Union, danach die Verschiebung mit einer Variable, die durch die Schleife konstant steigt.
+// Das Headset wird auf dem Tisch und weitere Objekte in der Kabine platziert [C]
+// Mittels einer Schleife wird die Vereinigung der Kabine nun um jeweils ratioLength45Degree, was zuvor definiert wurde, verschoben. [D]
 #for (i, 0, 2) 
     union{
         object{Kabine}
@@ -438,5 +473,5 @@ global_settings{
         }
 
         translate<ratioLength45Degree*i,0, ratioLength45Degree*i>
-    }
+    } 
 #end 

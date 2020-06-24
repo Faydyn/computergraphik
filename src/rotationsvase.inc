@@ -1,3 +1,6 @@
+// Diese Vase ist Ergebnis der Rotation der Funktion sin^2(x)+0.05 (skaliert auf entsprechende Masse)
+// Der Quellcode wurde mit Python-Script "script.py" erzeugt, um moeglichst nahe an der tatsaechlichen Funktion zu sein.
+// Falls das fuer die Kontrolle eingesehen werden muss, bitte auf https://github.com/Faydyn/computergraphik/tree/master/script.py
 #declare Vase =
 sor{ 128,
 10*<0.0500,0.0000>,
